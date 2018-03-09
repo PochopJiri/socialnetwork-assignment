@@ -1,7 +1,7 @@
 # Sociální síť
 domácí úkol z předmětu **vývoj webových aplikací**
 ## Odevzdání
-**Datum odevzdání je: 30. 3. 2018**<br>
+**Datum odevzdání je: 30. 5. 2018**<br>
 Celý postup vývoje zaznamenávejte pomocí systému **git**.
 To bude i vaší výslednou prácí, která bude hodnocena.<br>
 **Nezapomeňte do repozitáře přidat i dump vaší databáze!**<br>
