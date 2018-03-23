@@ -1,15 +1,21 @@
-{* This is the welcome page, you can delete it *}
-{layout ../@register.latte}
+{block title}
+    Přihlásit se
+{/block}
 {block content}
-<div class="row">
-    <div class="col">
-        <div class="card">
-            <div class="card-header">
-                <h2>Login</h2>
+<div class="card border-primary mx-auto" style="max-width: 25rem;">
+    <div class="card-header bg-transparent text-center text-primary mr-4 ml-4"><h2>Přihlásit se</h2></div>
+    <div class="card-body text-primary ">
+        <form  n:name=signInForm>
+            <div class="form-group">
+                <label n:name=username for="InputUsername">Uživatelské jméno:</label>
+                <input n:name=username type="text" class="form-control" id="InputUsername" placeholder="Zadejte uživatelské jméno">
             </div>
-            <div class="card-block">
-                {control signInForm}
+            <div class="form-group">
+                <label n:name=password for="InputPassword">Heslo:</label>
+                <input n:name=password type="password" class="form-control" id="InputPassword" placeholder="Zadejte heslo">
             </div>
-        </div>
+            <button n:name=add type="submit" class="btn btn-primary mb-3">Přihlásit se</button>
+        </form>
+        <a n:href="Sign:up">Jestě nemáte účet? - Zaregistrujte se</a>
     </div>
 </div>

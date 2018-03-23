@@ -42,8 +42,8 @@ class UserManager implements Nette\Security\IAuthenticator
 	{
 		[$email, $password] = $credentials;
 
-		$row = $this->database->table(self::TABLE_EMAIL)
-			->where(self::COLUMN_EMAIL, $email)
+		$row = $this->database->table("users")
+			->where("email", $email)
 			->fetch();
 
 		if (!$row) {
@@ -71,7 +71,7 @@ class UserManager implements Nette\Security\IAuthenticator
 	public function add(string $email, string $password): void
 	{
 		try {
-			$this->database->table(self::TABLE_EMAIL)->insert([
+			$this->database->table("users")->insert([
 				self::COLUMN_PASSWORD_HASH => Passwords::hash($password),
 				self::COLUMN_EMAIL => $email,
 			]);

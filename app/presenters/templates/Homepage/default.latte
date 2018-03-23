@@ -31,9 +31,15 @@
                 This is some text within a card block. {$item}
             </div>
             <div class="card-block">
-                <a href="#" class="btn btn-sm btn-success">
-                    <i class="fas fa-thumbs-up"></i> Like
-                </a>
+                {if $likes[1] == true}
+                    <a href="#" class="btn btn-sm btn-danger">
+                        <i class="far fa-heart"></i> 1
+                    </a>
+                {else}
+                    <a href="#" class="btn btn-sm btn-danger">
+                        <i class="fas fa-heart"></i> 1
+                    </a>
+                {/if}
                 <a href="#" class="btn btn-sm btn-primary">
                     <i class="fas fa-share"></i> Share
                 </a>

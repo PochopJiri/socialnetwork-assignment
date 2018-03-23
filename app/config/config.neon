@@ -12,7 +12,7 @@ session:
 
 
 services:
-	- App\Model\UserManager
+	- App\Model\Authenticator
 	- App\Forms\FormFactory
 	- App\Forms\SignUpFormFactory
 	- App\Forms\SignInFormFactory
