@@ -29,6 +29,6 @@ trait StaticClass
 	 */
 	public static function __callStatic($name, $args)
 	{
-		Utils\ObjectHelpers::strictStaticCall(get_called_class(), $name);
+		Utils\ObjectMixin::strictStaticCall(get_called_class(), $name);
 	}
 }

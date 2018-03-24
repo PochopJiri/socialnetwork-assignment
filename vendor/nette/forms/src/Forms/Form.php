@@ -353,7 +353,7 @@ class Form extends Container implements Nette\Utils\IHtmlString
 
 	/**
 	 * Tells if the form was submitted.
-	 * @return ISubmitterControl|bool  submittor control
+	 * @return ISubmitterControl|false  submittor control
 	 */
 	public function isSubmitted()
 	{

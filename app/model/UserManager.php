@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 namespace App\Model;
 
@@ -14,11 +13,10 @@ class UserManager implements Nette\Security\IAuthenticator
 {
 	use Nette\SmartObject;
 
-	private const
+	const
 		TABLE_NAME = 'users',
 		COLUMN_ID = 'id',
-		COLUMN_FIRSTNAME = 'firstname',
-		COLUMN_LASTNAME = 'lastname',
+		COLUMN_NAME = 'username',
 		COLUMN_PASSWORD_HASH = 'password',
 		COLUMN_EMAIL = 'email',
 		COLUMN_ROLE = 'role';
@@ -36,14 +34,15 @@ class UserManager implements Nette\Security\IAuthenticator
 
 	/**
 	 * Performs an authentication.
+	 * @return Nette\Security\Identity
 	 * @throws Nette\Security\AuthenticationException
 	 */
-	public function authenticate(array $credentials): Nette\Security\IIdentity
+	public function authenticate(array $credentials)
 	{
-		[$email, $password] = $credentials;
+		list($username, $password) = $credentials;
 
-		$row = $this->database->table("users")
-			->where("email", $email)
+		$row = $this->database->table(self::TABLE_NAME)
+			->where(self::COLUMN_NAME, $username)
 			->fetch();
 
 		if (!$row) {
@@ -66,12 +65,17 @@ class UserManager implements Nette\Security\IAuthenticator
 
 	/**
 	 * Adds new user.
+	 * @param  string
+	 * @param  string
+	 * @param  string
+	 * @return void
 	 * @throws DuplicateNameException
 	 */
-	public function add(string $email, string $password): void
+	public function add($username, $email, $password)
 	{
 		try {
-			$this->database->table("users")->insert([
+			$this->database->table(self::TABLE_NAME)->insert([
+				self::COLUMN_NAME => $username,
 				self::COLUMN_PASSWORD_HASH => Passwords::hash($password),
 				self::COLUMN_EMAIL => $email,
 			]);

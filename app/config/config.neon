@@ -1,3 +1,7 @@
+#
+# WARNING: it is CRITICAL that this file & directory are NOT accessible directly via a web browser!
+# https://nette.org/security-warning
+#
 parameters:
 
 
@@ -11,9 +15,17 @@ session:
 	expiration: 14 days
 
 
+database:
+	dsn: 'mysql:host=127.0.0.1;dbname=test'
+	user:
+	password:
+	options:
+		lazy: yes
+
+
 services:
 	- App\Model\Authenticator
 	- App\Forms\FormFactory
-	- App\Forms\SignUpFormFactory
 	- App\Forms\SignInFormFactory
+	- App\Forms\SignUpFormFactory
 	router: App\RouterFactory::createRouter

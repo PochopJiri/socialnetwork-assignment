@@ -28,7 +28,6 @@ class MimePart
 
 	/** @internal */
 	const EOL = "\r\n";
-
 	const LINE_LENGTH = 76;
 
 	/** @var array */
@@ -193,7 +192,7 @@ class MimePart
 	 * Adds or creates new multipart.
 	 * @return self
 	 */
-	public function addPart(self $part = null)
+	public function addPart(MimePart $part = null)
 	{
 		return $this->parts[] = $part === null ? new self : $part;
 	}

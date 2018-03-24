@@ -31,16 +31,16 @@ class FileLoader implements Latte\ILoader
 	 * Returns template source code.
 	 * @return string
 	 */
-	public function getContent($fileName)
+	public function getContent($file)
 	{
-		$file = $this->baseDir . $fileName;
+		$file = $this->baseDir . $file;
 		if ($this->baseDir && !Latte\Helpers::startsWith($this->normalizePath($file), $this->baseDir)) {
 			throw new \RuntimeException("Template '$file' is not within the allowed path '$this->baseDir'.");
 
 		} elseif (!is_file($file)) {
 			throw new \RuntimeException("Missing template file '$file'.");
 
-		} elseif ($this->isExpired($fileName, time())) {
+		} elseif ($this->isExpired($file, time())) {
 			if (@touch($file) === false) {
 				trigger_error("File's modification time is in the future. Cannot update it: " . error_get_last()['message'], E_USER_WARNING);
 			}

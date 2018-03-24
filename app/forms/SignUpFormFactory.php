@@ -33,8 +33,12 @@ class SignUpFormFactory
     public function create(callable $onSuccess)
     {
         $form = $this->factory->create();
+        $form->addText('username', 'Pick a username:')
+            ->setRequired('Please pick a username.');
+
         $form->addEmail('email', 'Your e-mail:')
             ->setRequired('Please enter your e-mail.');
+
         $form->addPassword('password', 'Create a password:')
             ->setOption('description', sprintf('at least %d characters', self::PASSWORD_MIN_LENGTH))
             ->setRequired('Please create a password.')
@@ -44,9 +48,9 @@ class SignUpFormFactory
 
         $form->onSuccess[] = function (Form $form, $values) use ($onSuccess) {
             try {
-                $this->userManager->add($values->email, $values->password);
+                $this->userManager->add($values->username, $values->email, $values->password);
             } catch (Model\DuplicateNameException $e) {
-                $form['email']->addError('E-mail is already taken.');
+                $form['username']->addError('Username is already taken.');
                 return;
             }
             $onSuccess();

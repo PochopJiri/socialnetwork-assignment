@@ -14,8 +14,6 @@
 		return contentId;
 	};
 
-	Tracy.panelZIndex = Tracy.panelZIndex || 20000;
-
 	var Panel = Tracy.DebugPanel = function(id) {
 		this.id = id;
 		this.elem = document.getElementById(this.id);
@@ -26,7 +24,7 @@
 	Panel.FLOAT = 'tracy-mode-float';
 	Panel.WINDOW = 'tracy-mode-window';
 	Panel.FOCUSED = 'tracy-focused';
-	Panel.zIndexCounter = 1;
+	Panel.zIndex = 20000;
 
 	Panel.prototype.init = function() {
 		var _this = this, elem = this.elem;
@@ -41,19 +39,12 @@
 			handles: elem.querySelectorAll('h1'),
 			start: function() {
 				_this.toFloat();
-				_this.focus();
-			}
-		});
-
-		elem.addEventListener('mousedown', function(e) {
-			if (isTargetChanged(e.relatedTarget, this)) {
-				_this.focus();
 			}
 		});
 
 		elem.addEventListener('mouseover', function(e) {
 			if (isTargetChanged(e.relatedTarget, this)) {
-				clearTimeout(elem.Tracy.displayTimeout);
+				_this.focus();
 			}
 		});
 
@@ -107,7 +98,7 @@
 			clearTimeout(elem.Tracy.displayTimeout);
 			elem.Tracy.displayTimeout = setTimeout(function() {
 				elem.classList.add(Panel.FOCUSED);
-				elem.style.zIndex = Tracy.panelZIndex + Panel.zIndexCounter++;
+				elem.style.zIndex = Panel.zIndex++;
 				if (callback) {
 					callback();
 				}
@@ -193,7 +184,7 @@
 		if (this.is(Panel.WINDOW)) {
 			localStorage.setItem(this.id, JSON.stringify({window: true}));
 		} else if (pos.width) {
-			localStorage.setItem(this.id, JSON.stringify({right: pos.right, bottom: pos.bottom, zIndex: this.elem.style.zIndex - Tracy.panelZIndex}));
+			localStorage.setItem(this.id, JSON.stringify({right: pos.right, bottom: pos.bottom}));
 		} else {
 			localStorage.removeItem(this.id);
 		}
@@ -210,8 +201,6 @@
 			this.init();
 			this.toFloat();
 			setPosition(this.elem, pos);
-			this.elem.style.zIndex = Tracy.panelZIndex + (pos.zIndex || 1);
-			Panel.zIndexCounter = Math.max(Panel.zIndexCounter, (pos.zIndex || 1)) + 1;
 		}
 	};
 
@@ -448,9 +437,7 @@
 		}
 		Debug.scriptElem = document.createElement('script');
 		Debug.scriptElem.src = url;
-		if (nonce) {
-			Debug.scriptElem.setAttribute('nonce', nonce);
-		}
+		Debug.scriptElem.setAttribute('nonce', nonce);
 		document.documentElement.appendChild(Debug.scriptElem);
 	};
 
@@ -459,9 +446,7 @@
 			if ((!script.hasAttribute('type') || script.type === 'text/javascript' || script.type === 'application/javascript') && !script.tracyEvaluated) {
 				var dolly = script.ownerDocument.createElement('script');
 				dolly.textContent = script.textContent;
-				if (nonce) {
-					dolly.setAttribute('nonce', nonce);
-				}
+				dolly.setAttribute('nonce', nonce);
 				script.ownerDocument.documentElement.appendChild(dolly);
 				script.tracyEvaluated = true;
 			}

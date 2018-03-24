@@ -2,28 +2,38 @@
 
 namespace App\Presenters;
 
-use Nette;
 use Nette\Database\Context;
+use Nette\Application\UI\Form;
+use Nette\Utils\DateTime;
 
-
-class HomepagePresenter extends Nette\Application\UI\Presenter
+class HomepagePresenter extends BasePresenter
 {
     private $database;
 
-    public function __construct(Context $database) {
+    public function __construct(Context $database)
+    {
+        parent::__construct($database);
         $this->database = $database;
     }
 
-    public function renderDefault()
+    protected function createComponentAddPost()
     {
-        $likes = $this->database->table("likes");
-        $likesArray = [];
-        foreach ($likes as $like) {
-            if ($like->user_id == 1)
-                $likesArray += [$like->post_id, true];
-            else
-                $likesArray += [$like->post_id, false];
-        }
-        $this->template->likes = $likesArray;
+        $form = new Form;
+        $form->addTextArea('content', 'Text:')
+            ->setRequired('Zadejte prosím text');
+        $form->addSubmit('add','Zveřejnit');
+        $form->onSuccess[] = [$this, 'AddPostSuccess'];
+        return $form;
+    }
+
+    public function AddPostSuccess($form, $values)
+    {
+        $row = $this->database->table("posts")->insert([
+            'user_id' => $this->getUser()->getId(),
+            'content' => $values->content,
+            'created' => new DateTime
+        ]);
+        $form->getPresenter()->flashMessage('Příspěvek byl úspěšně přidán.', 'success');
+        $form->getPresenter()->redirect('Homepage:');
     }
 }

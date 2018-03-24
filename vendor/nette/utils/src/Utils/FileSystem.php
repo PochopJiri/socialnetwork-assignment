@@ -105,9 +105,7 @@ class FileSystem
 
 		} else {
 			static::createDir(dirname($newName));
-			if (realpath($name) !== realpath($newName)) {
-				static::delete($newName);
-			}
+			static::delete($newName);
 			if (!@rename($name, $newName)) { // @ is escalated to exception
 				throw new Nette\IOException("Unable to rename file or directory '$name' to '$newName'.");
 			}

@@ -365,7 +365,9 @@ class RobotLoader
 	 */
 	public function setTempDirectory($dir)
 	{
-		Nette\Utils\FileSystem::createDir($dir);
+		if (!is_dir($dir)) {
+			@mkdir($dir); // @ - directory may already exist
+		}
 		$this->tempDirectory = $dir;
 		return $this;
 	}

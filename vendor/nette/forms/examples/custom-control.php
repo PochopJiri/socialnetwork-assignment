@@ -18,9 +18,7 @@ class DateInput extends Nette\Forms\Controls\BaseControl
 {
 	/** @var string */
 	private $day = '';
-
 	private $month = '';
-
 	private $year = '';
 
 

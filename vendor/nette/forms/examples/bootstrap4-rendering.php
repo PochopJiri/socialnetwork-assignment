@@ -27,33 +27,35 @@ function makeBootstrap4(Form $form)
 	$renderer->wrappers['control']['description'] = 'span class=form-text';
 	$renderer->wrappers['control']['errorcontainer'] = 'span class=form-control-feedback';
 
-	foreach ($form->getControls() as $control) {
-		$type = $control->getOption('type');
-		if ($type === 'button') {
-			$control->getControlPrototype()->addClass(empty($usedPrimary) ? 'btn btn-primary' : 'btn btn-secondary');
-			$usedPrimary = true;
+	$form->onRender[] = function ($form) {
+		foreach ($form->getControls() as $control) {
+			$type = $control->getOption('type');
+			if ($type === 'button') {
+				$control->getControlPrototype()->addClass(empty($usedPrimary) ? 'btn btn-primary' : 'btn btn-secondary');
+				$usedPrimary = true;
 
-		} elseif (in_array($type, ['text', 'textarea', 'select'], true)) {
-			$control->getControlPrototype()->addClass('form-control');
+			} elseif (in_array($type, ['text', 'textarea', 'select'], true)) {
+				$control->getControlPrototype()->addClass('form-control');
 
-		} elseif ($type === 'file') {
-			$control->getControlPrototype()->addClass('form-control-file');
+			} elseif ($type === 'file') {
+				$control->getControlPrototype()->addClass('form-control-file');
 
-		} elseif (in_array($type, ['checkbox', 'radio'], true)) {
-			if ($control instanceof Nette\Forms\Controls\Checkbox) {
-				$control->getLabelPrototype()->addClass('form-check-label');
-			} else {
-				$control->getItemLabelPrototype()->addClass('form-check-label');
+			} elseif (in_array($type, ['checkbox', 'radio'], true)) {
+				if ($control instanceof Nette\Forms\Controls\Checkbox) {
+					$control->getLabelPrototype()->addClass('form-check-label');
+				} else {
+					$control->getItemLabelPrototype()->addClass('form-check-label');
+				}
+				$control->getControlPrototype()->addClass('form-check-input');
+				$control->getSeparatorPrototype()->setName('div')->addClass('form-check');
 			}
-			$control->getControlPrototype()->addClass('form-check-input');
-			$control->getSeparatorPrototype()->setName('div')->addClass('form-check');
 		}
-	}
+	};
 }
 
 
 $form = new Form;
-$form->onRender[] = 'makeBootstrap4';
+makeBootstrap4($form);
 
 $form->addGroup('Personal data');
 $form->addText('name', 'Your name')
@@ -95,7 +97,7 @@ if ($form->isSuccess()) {
 <meta charset="utf-8">
 <title>Nette Forms & Bootstrap v4 rendering example</title>
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link rel="stylesheet" href="http://v4-alpha.getbootstrap.com/dist/css/bootstrap.min.css">
 
 <div class="container">
 	<h1>Nette Forms & Bootstrap v4 rendering example</h1>

@@ -55,7 +55,6 @@ class Callback
 	/**
 	 * Invokes callback.
 	 * @return mixed
-	 * @deprecated
 	 */
 	public static function invoke($callable, ...$args)
 	{
@@ -67,7 +66,6 @@ class Callback
 	/**
 	 * Invokes callback with an array of parameters.
 	 * @return mixed
-	 * @deprecated
 	 */
 	public static function invokeArgs($callable, array $args = [])
 	{
@@ -143,6 +141,9 @@ class Callback
 	{
 		if ($callable instanceof \Closure) {
 			$callable = self::unwrap($callable);
+		} elseif ($callable instanceof Nette\Callback) {
+			trigger_error('Nette\Callback is deprecated.', E_USER_DEPRECATED);
+			$callable = $callable->getNative();
 		}
 
 		$class = class_exists(Nette\Reflection\Method::class) ? Nette\Reflection\Method::class : 'ReflectionMethod';

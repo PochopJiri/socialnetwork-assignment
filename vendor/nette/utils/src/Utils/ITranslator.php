@@ -16,7 +16,7 @@ interface ITranslator
 
 	/**
 	 * Translates the given string.
-	 * @param  mixed    message
+	 * @param  string   message
 	 * @param  int      plural count
 	 * @return string
 	 */

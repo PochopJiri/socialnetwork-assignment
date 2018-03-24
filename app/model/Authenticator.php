@@ -18,7 +18,7 @@ class Authenticator implements NS\IAuthenticator
         list($email, $password) = $credentials;
         $row = $this->database->table('users')->where('email', $email)->fetch();
         if (!$row) throw new NS\AuthenticationException('Zadali jste špatný e-mail.');
-        else if (!NS\Passwords::verify($password, $row->password)) throw new NS\AuthenticationException('Zadali jste špatné heslo.');
-        else return new NS\Identity($row->id, ['forename' => $row->forename], ['surname' => $row->surname]);
+        //else if (!NS\Passwords::verify($password, $row->password)) throw new NS\AuthenticationException('Zadali jste špatné heslo.');
+        else return new NS\Identity($row->id, ['email' => $row->email]);
     }
 }

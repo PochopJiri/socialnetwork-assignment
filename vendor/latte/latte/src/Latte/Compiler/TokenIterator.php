@@ -176,10 +176,10 @@ class TokenIterator
 			return $token[Tokenizer::VALUE];
 		}
 		$pos = $this->position + 1;
-		while (($next = isset($this->tokens[$pos]) ? $this->tokens[$pos] : null) && in_array($next[Tokenizer::TYPE], $this->ignored, true)) {
+		while (isset($this->tokens[$pos]) && ($next = $this->tokens[$pos]) && in_array($next[Tokenizer::TYPE], $this->ignored, true)) {
 			$pos++;
 		}
-		throw new CompileException($next ? "Unexpected token '" . $next[Tokenizer::VALUE] . "'." : 'Unexpected end.');
+		throw new CompileException("Unexpected token '" . $next[Tokenizer::VALUE] . "'.");
 	}
 
 
@@ -218,6 +218,9 @@ class TokenIterator
 		$pos = $this->position + ($prev ? -1 : 1);
 		do {
 			if (!isset($this->tokens[$pos])) {
+				if (!$wanted && $advance && !$prev && $pos <= count($this->tokens)) {
+					$this->next();
+				}
 				return $res;
 			}
 

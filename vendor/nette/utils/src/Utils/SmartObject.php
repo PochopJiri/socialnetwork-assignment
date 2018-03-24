@@ -8,7 +8,6 @@
 namespace Nette;
 
 use Nette\Utils\Callback;
-use Nette\Utils\ObjectHelpers;
 use Nette\Utils\ObjectMixin;
 
 
@@ -30,7 +29,7 @@ trait SmartObject
 	public function __call($name, $args)
 	{
 		$class = get_class($this);
-		$isProp = ObjectHelpers::hasProperty($class, $name);
+		$isProp = ObjectMixin::hasProperty($class, $name);
 
 		if ($name === '') {
 			throw new MemberAccessException("Call to class '$class' method without name.");
@@ -74,7 +73,7 @@ trait SmartObject
 			return Callback::invoke($cb, $this, ...$args);
 
 		} else {
-			ObjectHelpers::strictCall($class, $name);
+			ObjectMixin::strictCall($class, $name);
 		}
 	}
 
@@ -85,7 +84,7 @@ trait SmartObject
 	 */
 	public static function __callStatic($name, $args)
 	{
-		ObjectHelpers::strictStaticCall(get_called_class(), $name);
+		ObjectMixin::strictStaticCall(get_called_class(), $name);
 	}
 
 
@@ -134,7 +133,7 @@ trait SmartObject
 			throw new MemberAccessException("Cannot read a write-only property $class::\$$name.");
 
 		} else {
-			ObjectHelpers::strictGet($class, $name);
+			ObjectMixin::strictGet($class, $name);
 		}
 	}
 
@@ -148,7 +147,7 @@ trait SmartObject
 		$class = get_class($this);
 		$uname = ucfirst($name);
 
-		if (ObjectHelpers::hasProperty($class, $name)) { // unsetted property
+		if (ObjectMixin::hasProperty($class, $name)) { // unsetted property
 			$this->$name = $value;
 
 		} elseif ($prop = ObjectMixin::getMagicProperty($class, $name)) { // property setter
@@ -168,7 +167,7 @@ trait SmartObject
 			throw new MemberAccessException("Cannot write to a read-only property $class::\$$name.");
 
 		} else {
-			ObjectHelpers::strictSet($class, $name);
+			ObjectMixin::strictSet($class, $name);
 		}
 	}
 
@@ -180,7 +179,7 @@ trait SmartObject
 	public function __unset($name)
 	{
 		$class = get_class($this);
-		if (!ObjectHelpers::hasProperty($class, $name)) {
+		if (!ObjectMixin::hasProperty($class, $name)) {
 			throw new MemberAccessException("Cannot unset the property $class::\$$name.");
 		}
 	}

@@ -110,10 +110,6 @@ class BlueScreen
 			]);
 		};
 		$nonce = Helpers::getNonce();
-		$css = array_map('file_get_contents', array_merge([
-			__DIR__ . '/assets/BlueScreen/bluescreen.css',
-		], Debugger::$customCssFiles));
-		$css = preg_replace('#\s+#u', ' ', implode($css));
 
 		require $template;
 	}
