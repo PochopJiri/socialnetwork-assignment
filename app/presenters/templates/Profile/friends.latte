@@ -1,0 +1,5 @@
+{block content}
+<h1>Přátelé</h1>
+{foreach $friends as $friend}
+    <a n:href="Profile: 'id' => $friend['db']->id">{$friend['db']->forename} {$friend['db']->surname}</a>
+{/foreach}

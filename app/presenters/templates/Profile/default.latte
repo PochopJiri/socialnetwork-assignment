@@ -4,9 +4,10 @@
     <div class="card-body">
         <h5 class="card-title">{$shownUser->forename} {$shownUser->surname}</h5>
         <p class="card-text">E-mail: {$shownUser->email}</p>
+        <p class="card-text"><a n:href="Profile:friends 'id' => $shownUser->id">Moji přátelé ({$friends})</a></p>
         <div class="text-right">
         {if $me}
-            <a href="#" class="btn btn-sm btn-secondary text-right">Upravit</a>
+            <a n:href="Profile:edit 'id' => $shownUser->id" class="btn btn-sm btn-secondary text-right">Upravit</a>
         {else}
             <form n:name="changeFriendship">
                 <div class="form-group">
@@ -21,6 +22,7 @@
         </div>
     </div>
 </div>
+    {**
 <form>
     <div class="form-group">
         <textarea class="form-control" rows="3" placeholder="Co máte na srdci?"></textarea>
@@ -31,22 +33,23 @@
         </a>
     </div>
 </form>
+    *}
 {foreach $posts as $post}
-    <div class="card">
+    <div class="card mb-2">
         <div class="card-body">
-            <h5 class="card-title" style="display: inline;">{$shownUser->forename} {$shownUser->surname}</h5>
-            {if $post->shared_by != null}
+            <h5 class="card-title" style="display: inline;"><a n:href="Profile: 'id' => $post['db']->user_id" style="color: black;">{$shownUser->forename} {$shownUser->surname}</a></h5>
+            {if $post['db']->shared_by != null}
                 - sdílel příspěvek uživatele Jméno Příjmení
             {/if}
-            <h6 class="card-subtitle mb-2 text-muted">{$post->created->format('d. m. Y')}</h6>
-            <p class="card-text">{$post->content}</p>
-            {if true}
-                <a href="#" class="btn btn-sm btn-danger">
-                    <i class="far fa-heart"></i> 0
+            <h6 class="card-subtitle mb-2 text-muted">{$post['db']->created->format('d. m. Y')}</h6>
+            <p class="card-text">{$post['db']->content}</p>
+            {if $post['like']}
+                <a n:href="Profile:like 'post' => $post['db']->id, 'profile' => $shownUser->id" class="btn btn-sm btn-danger">
+                    <i class="fas fa-heart"></i> {$post['likes']}
                 </a>
             {else}
-                <a href="#" class="btn btn-sm btn-danger">
-                    <i class="fas fa-heart"></i> 0
+                <a n:href="Profile:like 'post' => $post['db']->id, 'profile' => $shownUser->id" class="btn btn-sm btn-danger">
+                    <i class="far fa-heart"></i> {$post['likes']}
                 </a>
             {/if}
             <a href="#" class="btn btn-sm btn-primary">

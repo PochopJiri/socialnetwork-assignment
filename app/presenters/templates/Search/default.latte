@@ -1,0 +1,52 @@
+{block content}
+<div id="accordion">
+    <div class="card">
+        <div class="card-header" id="headingOne">
+            <h5 class="mb-0">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                    Podle jména ({$forenames->count()})
+                </button>
+            </h5>
+        </div>
+
+        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+            <div class="card-body">
+                {foreach $forenames as $forename}
+                    <a n:href="Profile: 'id' => $forename->id" style="color: black;">{$forename->forename} {$forename->surname}</a><br>
+                {/foreach}
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header" id="headingTwo">
+            <h5 class="mb-0">
+                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Podle příjmení ({$surnames->count()})
+                </button>
+            </h5>
+        </div>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+            <div class="card-body">
+                {foreach $surnames as $surname}
+                    <a n:href="Profile: 'id' => $surname->id" style="color: black;">{$surname->forename} {$surname->surname}</a><br>
+                {/foreach}
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header" id="headingThree">
+            <h5 class="mb-0">
+                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    podle e-mailu ({$emails->count()})
+                </button>
+            </h5>
+        </div>
+        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+            <div class="card-body">
+                {foreach $emails as $email}
+                    <a n:href="Profile: 'id' => $email->id" style="color: black;">{$email->forename} {$email->surname}</a><br>
+                {/foreach}
+            </div>
+        </div>
+    </div>
+</div>

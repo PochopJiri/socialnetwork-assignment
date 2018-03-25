@@ -9,24 +9,27 @@
         </button>
     </div>
 </form>
-{foreach [1,2,3,4,5,6] as $item}
-<div class="card mb-2">
-    <div class="card-body">
-        <h5 class="card-title">Jméno Příjmení</h5>
-        <h6 class="card-subtitle mb-2 text-muted">dd. mm. rrrr</h6>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        {if true}
-            <a href="#" class="btn btn-sm btn-danger">
-                <i class="far fa-heart"></i> 0
+{foreach $posts as $post}
+    <div class="card mb-2">
+        <div class="card-body">
+            <h5 class="card-title" style="display: inline;"><a n:href="Profile: 'id' => $post['user']->id" style="color: black;">{$post['user']->forename} {$post['user']->surname}</a></h5>
+            {if $post['db']->shared_by != null}
+                - sdílel příspěvek uživatele Jméno Příjmení
+            {/if}
+            <h6 class="card-subtitle mb-2 text-muted">{$post['db']->created->format('d. m. Y')}</h6>
+            <p class="card-text">{$post['db']->content}</p>
+            {if $post['like']}
+                <a n:href="Homepage:like 'post' => $post['db']->id" class="btn btn-sm btn-danger">
+                    <i class="fas fa-heart"></i> {$post['likes']}
+                </a>
+            {else}
+                <a n:href="Homepage:like 'post' => $post['db']->id" class="btn btn-sm btn-danger">
+                    <i class="far fa-heart"></i> {$post['likes']}
+                </a>
+            {/if}
+            <a href="#" class="btn btn-sm btn-primary">
+                <i class="fas fa-share"></i> Sdílet
             </a>
-        {else}
-            <a href="#" class="btn btn-sm btn-danger">
-                <i class="fas fa-heart"></i> 0
-            </a>
-        {/if}
-        <a href="#" class="btn btn-sm btn-primary">
-            <i class="fas fa-share"></i> Sdílet
-        </a>
+        </div>
     </div>
-</div>
 {/foreach}

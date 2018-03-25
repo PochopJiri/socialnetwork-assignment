@@ -22,6 +22,8 @@
       <path value="$PROJECT_DIR$/vendor/nette/di" />
       <path value="$PROJECT_DIR$/vendor/nette/neon" />
       <path value="$PROJECT_DIR$/vendor/nette/tester" />
+      <path value="$PROJECT_DIR$/vendor/nette/safe-stream" />
+      <path value="$PROJECT_DIR$/vendor/dg/adminer-custom" />
     </include_path>
   </component>
 </project>
