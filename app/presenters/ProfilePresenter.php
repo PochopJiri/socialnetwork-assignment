@@ -47,6 +47,7 @@ class ProfilePresenter extends BasePresenter
                 }
                 $postsArray[$post->id] = [
                     'db' => $post,
+                    'user' => $this->database->table("users")->get($post->user_id),
                     'likes' => $count,
                     'like' => $liked
                 ];
@@ -171,5 +172,13 @@ class ProfilePresenter extends BasePresenter
         else {
             $form->getPresenter()->flashMessage('Tento e-mail již někdo používá.', 'danger');
         }
+    }
+
+    public function actionDeletePost($id, $profile)
+    {
+        $this->database->table("posts")->where("id", $id)->delete();
+        $this->database->table("likes")->where("post_id", $id)->delete();
+        $this->getPresenter()->flashMessage('Příspěvek byl smazán.', 'success');
+        $this->redirect('Profile:', array('id' => $profile));
     }
 }

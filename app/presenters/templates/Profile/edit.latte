@@ -4,7 +4,8 @@
 {block content}
 <div class="card mt-5 mx-auto" style="max-width: 30rem;">
     <div class="card-body">
-        <img src="{$basePath}/{$shownUser->profile_pic}" class="rounded mx-auto d-block mb-3" style="max-height: 15em; max-width: 15em;">
+        <img src="{$basePath}/img/{$shownUser->profile_pic}" class="rounded mx-auto d-block mb-3" style="max-height: 15em; max-width: 15em;">
+        <img src="{$basePath}/img/{$shownUser->header_pic}" class="rounded mx-auto d-block mb-3" style="max-height: 15em; max-width: 15em;">
         <form n:name="editUserForm">
             <dl class="row">
                 <dt class="col-sm-5">E-mail:</dt>
