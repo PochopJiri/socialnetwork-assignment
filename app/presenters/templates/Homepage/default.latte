@@ -18,9 +18,9 @@
                 </div>
                 <div class="col-11">
                     <h5 class="card-title" style="display: inline;"><a n:href="Profile: 'id' => $post['user']->id" style="color: black;">{$post['user']->forename} {$post['user']->surname}</a></h5>
-                    {if $post['db']->shared_by != null}
+                    {**{if $post['db']->shared_by != null}
                         - sdílel příspěvek uživatele Jméno Příjmení
-                    {/if}
+                    {/if}*}
                     <br>
                     <h6 class="card-subtitle mb-2 text-muted" style="display: inline;">{$post['db']->created->format('d. m. Y')}</h6>
                 </div>

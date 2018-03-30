@@ -69,7 +69,9 @@ class SignPresenter extends BasePresenter
                 'forename' => $values->forename,
                 'surname' => $values->surname,
                 'email' => $values->email,
-                'password' => Passwords::hash($values->password)
+                'password' => Passwords::hash($values->password),
+                'header_pic' => "default-header.jpg",
+                'profile_pic' => "default-picture.jpg"
             ]);
             $this->getUser()->login($values->email, $values->password);
             $this->flashMessage('Vítejte ' . $values->forename . '!', 'success');

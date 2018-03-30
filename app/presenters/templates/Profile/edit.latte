@@ -4,14 +4,32 @@
 {block content}
 <div class="card mt-5 mx-auto" style="max-width: 30rem;">
     <div class="card-body">
-        <img src="{$basePath}/img/{$shownUser->profile_pic}" class="rounded mx-auto d-block mb-3" style="max-height: 15em; max-width: 15em;">
-        <img src="{$basePath}/img/{$shownUser->header_pic}" class="rounded mx-auto d-block mb-3" style="max-height: 15em; max-width: 15em;">
         <form n:name="editUserForm">
             <dl class="row">
+                <dt class="col-sm-5">Header:</dt>
+                <dd class="col-sm-7">
+                    <img src="{$basePath}/img/{$shownUser->header_pic}" class="rounded mx-auto d-block mb-3" style="max-height: 15em; max-width: 15em;">
+                    <div class="form-group">
+                        <input n:name="header" type="file" class="form-control" id="InputHeader">
+                    </div>
+                </dd>
+                <dt class="col-sm-5">Profilový obrázek:</dt>
+                <dd class="col-sm-7">
+                    <img src="{$basePath}/img/{$shownUser->profile_pic}" class="rounded mx-auto d-block mb-3" style="max-height: 15em; max-width: 15em;">
+                    <div class="form-group">
+                        <input n:name="profile" type="file" class="form-control" id="InputProfile">
+                    </div>
+                </dd>
                 <dt class="col-sm-5">E-mail:</dt>
                 <dd class="col-sm-7">
                     <div class="form-group">
                         <input n:name="email" type="text" class="form-control" id="InputEmail" value="{$shownUser->email}">
+                    </div>
+                </dd>
+                <dt class="col-sm-5">Nové heslo:</dt>
+                <dd class="col-sm-7">
+                    <div class="form-group">
+                        <input n:name="password" type="password" class="form-control" id="InputPassword">
                     </div>
                 </dd>
             </dl>

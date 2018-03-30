@@ -1,21 +1,16 @@
 <?php
-
 namespace App\Presenters;
-
 use Nette\Database\Context;
 use Nette\Application\UI\Form;
 use Nette\Utils\DateTime;
-
 class HomepagePresenter extends BasePresenter
 {
     private $database;
-
     public function __construct(Context $database)
     {
         parent::__construct($database);
         $this->database = $database;
     }
-
     public function renderDefault()
     {
         $postsArray = [];
@@ -43,7 +38,6 @@ class HomepagePresenter extends BasePresenter
         }
         $this->template->posts = $postsArray;
     }
-
     protected function createComponentAddPost()
     {
         $form = new Form;
@@ -53,7 +47,6 @@ class HomepagePresenter extends BasePresenter
         $form->onSuccess[] = [$this, 'AddPostSuccess'];
         return $form;
     }
-
     public function AddPostSuccess($form, $values)
     {
         $this->database->table("posts")->insert([
@@ -64,7 +57,6 @@ class HomepagePresenter extends BasePresenter
         $form->getPresenter()->flashMessage('Příspěvek byl úspěšně přidán.', 'success');
         $form->getPresenter()->redirect('Homepage:');
     }
-
     public function actionLike($post)
     {
         $row = $this->database->table("likes")->where("user_id", $this->getUser()->id)->where("post_id", $post);

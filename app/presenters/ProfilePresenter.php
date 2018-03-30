@@ -4,6 +4,7 @@ namespace App\Presenters;
 
 use Nette\Database\Context;
 use Nette\Application\UI\Form;
+use Nette\Security\Passwords;
 
 class ProfilePresenter extends BasePresenter
 {
@@ -147,8 +148,11 @@ class ProfilePresenter extends BasePresenter
 
     protected function createComponentEditUserForm() {
         $form = new Form;
+        $form->addUpload('header', 'Header:');
+        $form->addUpload('profile', 'Profilový obrázek:');
         $form->addEmail('email', 'E-mail:')
             ->setRequired('Zadejte prosím e-mail');
+        $form->addPassword('password', "Nové heslo:");
         $form->addSubmit('add','Uložit');
         $form->onSuccess[] = [$this, 'EditUserFormSuccess'];
         return $form;
@@ -159,12 +163,35 @@ class ProfilePresenter extends BasePresenter
         if ($shownUser->email == $values->email || $this->database->table('users')->where("email", $values->email)->count() == 0)
         {
             $shownUser->update([
-                'username' => $values->username,
-                'forename' => $values->forename,
-                'surname' => $values->surname,
-                'email' => $values->email,
-                'role' => "member"
+                'email' => $values->email
             ]);
+            if ($values->header->name != null)
+            {
+                if ($values->header->isImage()) {
+                    $file = $values->header;
+                    $file_ext = strtolower(mb_substr($file->getSanitizedName(), strrpos($file->getSanitizedName(), ".")));
+                    $filename = $values->email."h".$file_ext;
+                    $file->move("img/".$filename);
+                    $shownUser->update([
+                        'header_pic' => $filename
+                    ]);
+                }
+                else $this->flashMessage('Nepodporovaný formát obrázku!', 'danger');
+            }
+            if ($values->profile->name != null)
+            {
+                if ($values->profile->isImage()) {
+                    $file = $values->profile;
+                    $file_ext = strtolower(mb_substr($file->getSanitizedName(), strrpos($file->getSanitizedName(), ".")));
+                    $filename = $values->email."p".$file_ext;
+                    $file->move("img/".$filename);
+                    $shownUser->update([
+                        'profile_pic' => $filename
+                    ]);
+                }
+                else $this->flashMessage('Nepodporovaný formát obrázku!', 'danger');
+            }
+            if ($values->password != null) $shownUser->update(['password' => Passwords::hash($values->password)]);
             $this->getUser()->logout();
             $form->getPresenter()->flashMessage('Profil byl úspěšně aktualizován. Přihlaste se prosím znovu.', 'success');
             $form->getPresenter()->redirect('Sign:in');
@@ -180,5 +207,26 @@ class ProfilePresenter extends BasePresenter
         $this->database->table("likes")->where("post_id", $id)->delete();
         $this->getPresenter()->flashMessage('Příspěvek byl smazán.', 'success');
         $this->redirect('Profile:', array('id' => $profile));
+    }
+
+    public function SignUpFormSuccess($form, $values) {
+        if (($this->database->table('users')->where("username", $values->username)->count() <= 0)) {
+            if ($values->picture->name != null && $values->picture->isImage()) {
+                $file = $values->picture;
+                $file_ext = strtolower(mb_substr($file->getSanitizedName(), strrpos($file->getSanitizedName(), ".")));
+                $filename = $values->username.$file_ext;
+                $file->move("pictures/".$filename);
+                $this->database->table("users")->insert([
+                    'picture' => "pictures/".$filename
+                ]);
+            }
+            elseif ($values->picture->name != null) $this->flashMessage('Nepodporovaný formát obrázku!', 'danger');
+            else {
+                $this->database->table("users")->insert([
+                    'picture' => "pictures/default.jpg"
+                ]);
+            }
+        }
+        else $this->flashMessage('Toto uživatelské jméno již někdo používá', 'danger');
     }
 }
